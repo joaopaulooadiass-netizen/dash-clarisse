@@ -1,4 +1,5 @@
-import { supabaseServer } from './server'
+import { getSupabaseServer } from './server'
+export { supabaseConfigurado } from './server'
 import type { MetaAction } from '@/lib/meta/actions'
 import { subDias } from '@/lib/utils/data'
 
@@ -33,7 +34,10 @@ export async function readCache(
   since: string,
   until: string,
 ): Promise<CacheRow[]> {
-  const { data, error } = await supabaseServer
+  const sb = getSupabaseServer()
+  if (!sb) return [] // sem Supabase → cache sempre vazio, callers caem na API
+
+  const { data, error } = await sb
     .from('meta_insights_cache')
     .select('*')
     .eq('account_id', accountId)
@@ -56,7 +60,10 @@ export async function getDatesInCache(
   since: string,
   until: string,
 ): Promise<Set<string>> {
-  const { data, error } = await supabaseServer
+  const sb = getSupabaseServer()
+  if (!sb) return new Set() // cache "incompleto" → força busca na API
+
+  const { data, error } = await sb
     .from('meta_insights_cache')
     .select('date_start')
     .eq('account_id', accountId)
@@ -76,7 +83,10 @@ export async function getDatesInCache(
 export async function upsertCache(rows: CacheRow[]): Promise<void> {
   if (rows.length === 0) return
 
-  const { error } = await supabaseServer
+  const sb = getSupabaseServer()
+  if (!sb) return // sem Supabase → gravação é no-op silencioso
+
+  const { error } = await sb
     .from('meta_insights_cache')
     .upsert(
       rows.map(r => ({ ...r, synced_at: new Date().toISOString() })),

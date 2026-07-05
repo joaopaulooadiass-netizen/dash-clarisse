@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { metaGetAll, accountPath, fatiarPeriodo } from '@/lib/meta/client'
-import { upsertCache, cutoffDate, type CacheRow } from '@/lib/supabase/meta-cache'
+import { upsertCache, cutoffDate, supabaseConfigurado, type CacheRow } from '@/lib/supabase/meta-cache'
 import { hoje, subDias } from '@/lib/utils/data'
 import type { MetaAction } from '@/lib/meta/actions'
 
@@ -138,6 +138,12 @@ async function syncCampaign(accountId: string, since: string, until: string): Pr
 export async function POST(req: NextRequest) {
   if (!autenticado(req)) {
     return NextResponse.json({ error: 'não autorizado' }, { status: 401 })
+  }
+
+  // Sem Supabase não há onde gravar — responde 200 pro Vercel Cron não acusar
+  // falha; religar o cache = só cadastrar as envs do Supabase.
+  if (!supabaseConfigurado()) {
+    return NextResponse.json({ ok: true, skipped: 'Supabase não configurado — cache desativado' })
   }
 
   const url = new URL(req.url)
