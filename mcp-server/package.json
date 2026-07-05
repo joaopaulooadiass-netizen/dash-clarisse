@@ -1,0 +1,16 @@
+{
+  "name": "dashboard-copy-que-vende-mcp",
+  "version": "1.0.0",
+  "description": "MCP server — Dashboard Copy que Vende. Expõe dados de Meta Ads ao Claude.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node -e \"import('./data.js').then(async m => { const r = await m.getResumoPeriodo(30); console.log('OK — ROAS:', r.roas, '| Investimento:', r.investimento, '| Conversoes:', r.conversoes) })\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}

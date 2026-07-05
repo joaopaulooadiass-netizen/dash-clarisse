@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* Fontes (Fraunces + Satoshi) são carregadas via <link> no layout raiz —
+   @import url() aqui quebra o parser CSS do Turbopack. */
+
+/* ─── DESIGN TOKENS — SALTO PARA O DÓLAR ─────────────────────────────────────
+   Design system extraído de saltoparaodolar.com:
+   creme + tinta oliva, acento lima/oliva, Fraunces (display) + Satoshi (corpo),
+   raios generosos e sombras suaves com tom oliva. */
+@theme {
+  /* Paleta da marca */
+  --color-lado-oculto:     #15180F; /* oliva-negro — superfícies escuras */
+  --color-ponto-conversao: #5F8A3C; /* oliva — ação, destaque, CTA */
+  --color-revelacao:       #FFFFFF; /* branco — contraste */
+
+  --color-lime:        #C2E84C; /* lima — realce, fills de CTA */
+  --color-lime-dark:   #A9D63A;
+  --color-lime-glow:   #BEDE00;
+  --color-olive:       #5F8A3C;
+  --color-green-soft:  #E9F2CE;
+  --color-peach:       #F8E2D6;
+  --color-peach-ink:   #D9805C;
+  --color-blue-soft:   #E3E9F8;
+  --color-blue-ink:    #5C79C9;
+
+  /* Superfícies de fundo (tema claro creme — padrão do site) */
+  --color-bg-primary:     #F5F2EA; /* tela principal — creme */
+  --color-bg-secondary:   #EFEBDE; /* sidebar, nav */
+  --color-bg-tertiary:    #E6E1CF; /* hover states */
+  --color-bg-card:        #FDFBF5; /* cards, painéis */
+
+  /* Texto */
+  --color-text-primary:   #1C1C1A;
+  --color-text-secondary: #4A4A42;
+  --color-text-muted:     #6E6E66;
+  --color-text-tertiary:  #8A8A7E;
+
+  /* Bordas */
+  --color-border-subtle:  #E7E2D1;
+  --color-border-default: #D8D2BC;
+  --color-border-strong:  #B8B19A;
+
+  /* Acento / destaque */
+  --color-accent:         #5F8A3C;
+  --color-accent-hover:   #4E7530;
+  --color-accent-muted:   rgba(95, 138, 60, 0.14);
+
+  /* Semáforo de performance */
+  --color-signal-green:   #5F8A3C; /* bom — acima da meta */
+  --color-signal-yellow:  #E8BE0B; /* atenção — na meta */
+  --color-signal-red:     #E0392F; /* alerta — abaixo da meta */
+  --color-signal-neutral: #8A8A7E; /* sem dados / inativo */
+
+  /* Fontes */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:    "Satoshi", ui-sans-serif, system-ui, sans-serif;
+
+  /* Espaçamentos Fibonacci */
+  --spacing-fib-1:  4px;
+  --spacing-fib-2:  8px;  /* não 8 no Fibonacci puro, mas convencional */
+  --spacing-fib-3:  12px;
+  --spacing-fib-5:  20px;
+  --spacing-fib-8:  32px;
+  --spacing-fib-13: 52px;
+  --spacing-fib-21: 84px;
+
+  /* Border radius — generosos, como no site */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --radius-pill: 999px;
+
+  /* Sombras suaves com tom oliva */
+  --shadow-card:  0 8px 24px rgba(20, 20, 15, 0.04);
+  --shadow-float: 0 12px 34px rgba(20, 20, 15, 0.07);
+  --shadow-lime:  0 0 12px rgba(190, 222, 0, 0.6);
+}
+
+/* ─── MODO ESCURO (variante oliva-negro do site) ─────────────────────────── */
+@layer base {
+  [data-theme="dark"] {
+    --color-bg-primary:     #15180F;
+    --color-bg-secondary:   #1C2013;
+    --color-bg-tertiary:    #262B1A;
+    --color-bg-card:        #1A1E12;
+
+    --color-text-primary:   #F5F2EA;
+    --color-text-secondary: #D5D2C6;
+    --color-text-muted:     #A3A294;
+    --color-text-tertiary:  #82816F;
+
+    --color-border-subtle:  #262B1A;
+    --color-border-default: #333926;
+    --color-border-strong:  #4A5236;
+
+    --color-accent:         #C2E84C;
+    --color-accent-hover:   #D3E350;
+    --color-accent-muted:   rgba(194, 232, 76, 0.15);
+  }
+}
+
+/* ─── RESET & BASE ────────────────────────────────────────────────────────── */
+:root {
+  --background: var(--color-bg-primary);
+  --foreground: var(--color-text-primary);
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-optical-sizing: auto;
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(110,110,102,0.25); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(110,110,102,0.4); }
+::-webkit-scrollbar-corner { background: transparent; }

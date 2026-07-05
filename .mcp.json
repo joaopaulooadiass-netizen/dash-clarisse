@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "dashboard-salto-para-o-dolar": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp-server/index.js"],
+      "cwd": "/Users/joaopauloantunes/Projects/dash-clarisse"
+    }
+  }
+}
