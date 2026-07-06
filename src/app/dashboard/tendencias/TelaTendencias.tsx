@@ -826,11 +826,24 @@ export function TelaTendencias({ dadosCampanha, geoRegioes, geoPaises, campanhas
                     </p>
                   ) : null
                 })()}
-                {!mapaHover && (
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.62rem', color: 'var(--color-text-muted)', marginTop: '0.1rem' }}>
-                    Segue os filtros e o período da tela · passe o mouse para detalhes
-                  </p>
-                )}
+                {!mapaHover && (() => {
+                  // Desde o iOS 14, a Meta não divulga conversões do pixel (compras/ROAS)
+                  // por região — sem o aviso, o mapa zerado parecia bug do dashboard.
+                  const metricaConversao = hmRegiao === 'compras' || hmRegiao === 'roas'
+                  const tudoZerado = dadosMapa.every(d => !d[hmRegiao])
+                  if (metricaConversao && tudoZerado) {
+                    return (
+                      <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.62rem', color: 'var(--color-signal-yellow)', marginTop: '0.1rem', fontWeight: 600 }}>
+                        ⚠ A Meta não fornece compras/ROAS por localização (privacidade iOS 14) — use investimento ou CTR
+                      </p>
+                    )
+                  }
+                  return (
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.62rem', color: 'var(--color-text-muted)', marginTop: '0.1rem' }}>
+                      Segue os filtros e o período da tela · passe o mouse para detalhes
+                    </p>
+                  )
+                })()}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 {hmSelectRegiao(hmRegiao, setHmRegiao)}

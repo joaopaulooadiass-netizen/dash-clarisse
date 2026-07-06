@@ -199,6 +199,25 @@ function CriativoMedia({
       {(criativo.thumbUrl || criativo.videoUrl) && (
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.18), transparent 35%, rgba(0,0,0,0.55))', pointerEvents: 'none' }} />
       )}
+      {/* Vídeo sem source (token sem permissão na página) — o play leva ao Instagram
+          pra não parecer preview quebrado */}
+      {criativo.tipo === 'vídeo' && !criativo.videoUrl && criativo.permalinkUrl && (
+        <a
+          href={criativo.permalinkUrl}
+          target="_blank"
+          rel="noreferrer"
+          onClick={e => e.stopPropagation()}
+          title="Assistir no Instagram"
+          style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none' }}
+        >
+          <div style={{ width: isModal ? '72px' : '52px', height: isModal ? '72px' : '52px', borderRadius: '50%', backgroundColor: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 0, height: 0, borderTop: isModal ? '14px solid transparent' : '10px solid transparent', borderBottom: isModal ? '14px solid transparent' : '10px solid transparent', borderLeft: isModal ? '24px solid white' : '18px solid white', marginLeft: isModal ? '5px' : '3px' }} />
+          </div>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: isModal ? '0.72rem' : '0.6rem', fontWeight: 700, color: 'white', backgroundColor: 'rgba(0,0,0,0.55)', padding: '0.15rem 0.5rem', borderRadius: 'var(--radius-pill)' }}>
+            Assistir no Instagram ↗
+          </span>
+        </a>
+      )}
     </>
   )
 }
